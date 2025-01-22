@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "exclude": [
+    "node_modules",
+    "public/videos"  // Add this line to exclude video files from compilation
+  ]
+}
