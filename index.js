@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
-const path = require("path");
+const rax = require("retry-axios");
 require("dotenv").config();
 
 const app = express();
@@ -10,6 +10,11 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 
+// Attach the retry-axios interceptor to the global axios instance
+const interceptorId = rax.attach();
+
+// Set default timeout for all Axios requests
+axios.defaults.timeout = 5000; // 5000 milliseconds = 5 seconds
 
 // ✅ Home Page
 app.get("/api/hianime/home", async (req, res) => {
