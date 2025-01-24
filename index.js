@@ -20,7 +20,7 @@ axios.defaults.timeout = 5000; // 5000 milliseconds = 5 seconds
 app.get("/api/hianime/home", async (req, res) => {
     console.log("Home Page");
     try {
-        const response = await axios.get("https://aniwatch-api-mixp.onrender.com/api/v2/hianime/home");
+        const response = await axios.get("https://aniwatch-api-sage-nu.vercel.app/api/v2/hianime/home");
         res.json(response.data);
     } catch (error) {
         console.error("Backend fetch error:", error);
@@ -32,7 +32,7 @@ app.get("/api/hianime/home", async (req, res) => {
 app.get("/api/anime/info/:id", async (req, res) => {
     try {
         const animeId = req.params.id;
-        const response = await axios.get(`https://aniwatch-api-mixp.onrender.com/api/v2/hianime/anime/${animeId}`);
+        const response = await axios.get(`https://aniwatch-api-sage-nu.vercel.app/api/v2/hianime/anime/${animeId}`);
         res.json(response.data);
     } catch (error) {
         res.status(500).json({ error: "Error fetching the data" });
@@ -43,7 +43,7 @@ app.get("/api/anime/info/:id", async (req, res) => {
 app.get("/api/episode/:id", async (req, res) => {
     try {
         const animeId = req.params.id;
-        const response = await axios.get(`https://aniwatch-api-mixp.onrender.com/api/v2/hianime/anime/${animeId}/episodes`);
+        const response = await axios.get(`https://aniwatch-api-sage-nu.vercel.app/api/v2/hianime/anime/${animeId}/episodes`);
         res.json(response.data);
     } catch (error) {
         res.status(500).json({ error: "Error fetching the data" });
@@ -62,7 +62,7 @@ app.get("/api/episode/sources/:episodeId/:episodeNumber/:category", async (req, 
 
     try {
         const response = await axios.get(
-            `https://aniwatch-api-mixp.onrender.com/api/v2/hianime/episode/sources?animeEpisodeId=${episodeId}?${episodeNumber}&server=hd-1&category=${category}`
+            `https://aniwatch-api-sage-nu.vercel.app/api/v2/hianime/episode/sources?animeEpisodeId=${episodeId}?${episodeNumber}&server=hd-1&category=${category}`
         );
 
         console.log("Fetched video source:", response.data);
@@ -80,7 +80,7 @@ app.get("/api/search/:q", async (req, res) => {
 
     try {
         const response = await axios.get(
-            `https://aniwatch-api-mixp.onrender.com/api/v2/hianime/search/suggestion?q=${query}`
+            `https://aniwatch-api-sage-nu.vercel.app/api/v2/hianime/search/suggestion?q=${query}`
         );
 
         console.log("Fetched search suggestion:", response.data);
