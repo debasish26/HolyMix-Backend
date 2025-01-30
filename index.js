@@ -1,20 +1,22 @@
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
-const rax = require("retry-axios");
+const path = require("path");
 require("dotenv").config();
-
+const request = require("request");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({ origin: "*" }));
+const corsOptions = {
+    origin: "*", // Allow all origins (you can restrict it to your frontend domain)
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
-// Attach the retry-axios interceptor to the global axios instance
-const interceptorId = rax.attach();
-
-// Set default timeout for all Axios requests
-axios.defaults.timeout = 5000; // 5000 milliseconds = 5 seconds
 
 // ✅ Home Page
 app.get("/api/hianime/home", async (req, res) => {
@@ -52,6 +54,7 @@ app.get("/api/episode/:id", async (req, res) => {
 
 // ✅ Fetch Episode Sources
 app.get("/api/episode/sources/:episodeId/:episodeNumber/:category", async (req, res) => {
+
     const { episodeId, episodeNumber, category } = req.params;
 
     console.log("Received request with Episode ID:", episodeId, "Category:", category);
@@ -90,6 +93,25 @@ app.get("/api/search/:q", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch search results" });
     }
 });
+
+// ✅ Fetch Anime by Genre
+app.get("/api/genre/:genreName", async (req, res) => {
+    const genre = req.params.genreName.toLowerCase();
+
+    console.log(`Fetching genre: ${genre}`);
+
+    try {
+        const response = await axios.get(
+            `https://aniwatch-api-sage-nu.vercel.app/api/v2/hianime/genre/${genre}?page=1`
+        );
+        console.log("Fetched genres data",response.data);
+        res.json(response.data);
+    } catch (error) {
+        console.error("Error fetching genre data:", error.message);
+        res.status(500).json({ error: "Failed to fetch genre data" });
+    }
+});
+
 
 // ✅ Start the Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
